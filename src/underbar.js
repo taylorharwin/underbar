@@ -164,9 +164,19 @@ var _ = { };
   //   var sum = _.reduce(numbers, function(total, number){
   //     return total + number;
   //   }, 0); // should be 6
-  _.reduce = function(collection, iterator, accumulator) {
+  _.reduce = function(collection, iterator, initialValue) {
+  var previousValue;
+  if (initialValue){
+    previousValue = initialValue;
+  }
+  else{
+    previousValue = 0;
+  }
+    _.each(collection, function(item, index, collection){
+      previousValue = iterator(previousValue, item);
+    });
+  return previousValue;
   };
-
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
