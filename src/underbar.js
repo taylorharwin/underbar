@@ -162,19 +162,17 @@ var _ = { };
   //   var sum = _.reduce(numbers, function(total, number){
   //     return total + number;
   //   }, 0); // should be 6
-  _.reduce = function(collection, iterator, initialValue) {
-  var previousValue;
-  if (initialValue){
-    previousValue = initialValue;
-  }
-  else{
-    previousValue = 0;
-  }
-    _.each(collection, function(item, index, collection){
-      previousValue = iterator(previousValue, item);
+  _.reduce = function (collection, iterator, initialValue) {
+    var hasInitialValue = arguments.length > 2;
+    _.each(collection, function (element, item, collection) {
+        if (!hasInitialValue) {
+            initialValue = element;
+           }
+            initialValue = iterator(initialValue, element);
     });
-  return previousValue;
-  };
+    return initialValue;
+};
+        
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
     // TIP: Many iteration problems can be most easily expressed in
@@ -190,7 +188,7 @@ var _ = { };
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
+    
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
