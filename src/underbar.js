@@ -98,8 +98,6 @@ var _ = { };
   _.uniq = function (array) {
     var samers = [];
     var seen = [];
-   samers.push(array[0]);
-   seen.push(array[0])
     var current = samers[0];
     _.each(array, function (value) {
         if (value != current && seen.indexOf(value) < 0){
