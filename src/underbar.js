@@ -188,14 +188,24 @@ var _ = { };
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    
-  };
+    if(!iterator){
+      iterator = function(item){return item;};
+    }
+     var result =  _.reduce(collection,function(status,item){
+      return ((status) ? iterator(item) : false);
+    },true);
+   return (Boolean(result) ? true : false);
+ };
+
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
+  _.some = function (collection, iterator) {
+    return !(_.every(collection, function (element) {
+        return !(Boolean(iterator(element)));
+    }));
+};
     // TIP: There's a very clever way to re-use every() here.
-  };
 
 
   /**
@@ -217,12 +227,28 @@ var _ = { };
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    var newProps = Array.prototype.slice.call(arguments, 1);
+    _.each(newProps, function(newToAdd) {
+      _.each(newToAdd, function(value, key) {
+        obj[key] = newToAdd[key];
+      });
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
-  };
+    var newProps = Array.prototype.slice.call(arguments, 1);
+    _.each(newProps, function(newToAdd){
+      _.each(newToAdd, function(value, key){
+        if (obj[key] === undefined){
+          obj[key] = newToAdd[key];
+        }
+        });
+      });
+    return obj;
+    };
 
 
   /**
@@ -285,7 +311,19 @@ var _ = { };
   // TIP: This function's test suite will ask that you not modify the original
   // input array. For a tip on how to make a copy of an array, see:
   // http://mdn.io/Array.prototype.slice
-  _.shuffle = function(array) {
+  _.shuffle = function(arr) {
+    var DuplicatedArr = arr.slice();
+    var resultArr = [];
+    var limit = DuplicatedArr.length-1;
+    var sortingNumber;
+
+    while (limit >= 0){
+      sortingNumber = Math.floor(Math.random() * limit);
+        resultArr.push(DuplicatedArr[sortingNumber]);
+        DuplicatedArr.splice(sortingNumber, 1)
+        limit--;
+   }
+      return resultArr;
   };
 
 
