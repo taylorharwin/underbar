@@ -195,15 +195,23 @@ var _ = { };
       return ((status) ? iterator(item) : false);
     },true);
    return (Boolean(result) ? true : false);
- };
+  };
 
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function (collection, iterator) {
-    return !(_.every(collection, function (element) {
-        return !(Boolean(iterator(element)));
-    }));
+  _.some = function(collection, iterator) {
+    // TIP: There's a very clever way to re-use every() here.
+    if (iterator === undefined) {
+      iterator = _.identity;
+    }
+    var status = false;
+   _.each(collection, function(item, index, collection){
+     if (iterator(item)){
+      status = true;
+    }
+    });
+  return status;
 };
     // TIP: There's a very clever way to re-use every() here.
 
