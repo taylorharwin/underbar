@@ -189,12 +189,12 @@ var _ = { };
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     if(!iterator){
-      iterator = function(item){return item;};
+      iterator = _.identity;
     }
      var result =  _.reduce(collection,function(status,item){
       return ((status) ? iterator(item) : false);
     },true);
-   return (Boolean(result) ? true : false);
+   return (result) ? true : false;
   };
 
 
