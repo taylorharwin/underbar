@@ -164,11 +164,12 @@ var _ = { };
   //   }, 0); // should be 6
   _.reduce = function (collection, iterator, initialValue) {
     var hasInitialValue = arguments.length > 2;
-    _.each(collection, function (element, item, collection) {
+    _.each(collection, function (item, index, collection) {
         if (!hasInitialValue) {
-            initialValue = element;
+            var previousValue = initialValue = item;
            }
-            initialValue = iterator(initialValue, element);
+           var previousValue = initialValue;
+            initialValue = iterator(previousValue, item);
     });
     return initialValue;
 };
@@ -200,22 +201,29 @@ var _ = { };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
-    if (iterator === undefined) {
-      iterator = _.identity;
-    }
-    var status = false;
-   _.each(collection, function(item, index, collection){
-     if (iterator(item)){
-      status = true;
-    }
-    });
-  return status;
+
+_.some = function(collection, iterator){
+if (!iterator){
+  iterator = function(e){return e;};
+}
+  return !_.every(collection, function(element){
+    return !iterator(element);
+  });
 };
     // TIP: There's a very clever way to re-use every() here.
 
-
+  //_.some = function(collection, iterator) {
+  //  if (iterator === undefined) {
+    //  iterator = _.identity;
+    //}
+    //var status = false;
+   //_.each(collection, function(item, index, collection){
+   //  if (iterator(item)){
+   //   status = true;
+   // }
+   // });
+  //return status;
+//};
   /**
    * OBJECTS
    * =======
